@@ -15,12 +15,10 @@ module.exports = function(sequelize, DataTypes) {
         unique: true,
         fields: ['name']
       }
-    ]
+    ],
+    underscored: true,
+    sequelize
   });
-
-  User.sync()
-    .then(() => console.log('User table created successfully'))
-    .catch(err => console.log('Error: User\'s model!\n', err.message));
 
   return User;
 };

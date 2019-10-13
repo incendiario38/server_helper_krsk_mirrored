@@ -1,25 +1,7 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 const User = require('../models').user;
-
-const validateToken = (req, res, next) => {
-  if (req.headers.authorization) {
-    const token = req.headers.authorization.split(' ')[1]; // Bearer <token>
-    const options = {
-      expiresIn: config.jwt.expiresIn
-    };
-    try {
-      req.decoded = jwt.verify(token, config.jwt.secret, options);
-      next();
-    } catch (err) {
-      throw new Error(err);
-    }
-  } else {
-    res.status(401).send({
-      error: `Authentication error. Token required.`
-    });
-  }
-};
+const Token = require('../models').token;
 
 const login = async (req, res) => {
   try {
@@ -45,13 +27,19 @@ const login = async (req, res) => {
 
     if (user.password === password) {
       const payload = {user: user.name};
-      const options = {expiresIn: config.jwt.expiresIn};
-      const secret = config.jwt.secret;
-      const token = jwt.sign(payload, secret, options);
+      const token = jwt.sign(payload, config.jwt.secret, {expiresIn: config.jwt.expiresIn});
+      const refreshToken = jwt.sign(payload, config.jwt.refreshSecret, {expiresIn: config.jwt.refreshExpiresIn});
+
+      await Token.create({
+        value: refreshToken,
+        status: true,
+        userId: user.id
+      });
 
       res.status(200).json({
         success: true,
-        token: token
+        token: token,
+        refreshToken: refreshToken
       });
     } else {
       res.status(401).json({
@@ -59,6 +47,36 @@ const login = async (req, res) => {
         message: 'Wrong username or password'
       });
     }
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({
+      error: true,
+      message: e.message
+    });
+  }
+};
+
+const refresh = async (req, res) => {
+  try {
+    const decoded = req.decoded;
+
+    const expirationDate = new Date(decoded.exp * 1000);
+    const currentDate = new Date();
+
+    if (currentDate.getTime() > expirationDate.getTime()) {
+      res.status(500).json({
+        error: true,
+        message: 'RefreshToken is expired'
+      });
+    }
+
+    const payload = {user: decoded.user};
+    const token = jwt.sign(payload, config.jwt.secret, {expiresIn: config.jwt.expiresIn});
+
+    res.status(200).json({
+      success: true,
+      token: token,
+    });
   } catch (e) {
     console.error(e);
     res.status(500).json({
@@ -86,4 +104,4 @@ const register = async (req, res) => {
   }
 };
 
-module.exports = {login, register, validateToken};
+module.exports = {login, register, refresh};

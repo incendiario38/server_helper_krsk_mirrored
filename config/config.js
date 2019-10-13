@@ -22,7 +22,9 @@ let config = {
   },
   jwt: {
     secret: process.env.JWT_SECRET || 'secretKey',
-    expiresIn: '1d'
+    expiresIn: 900,
+    refreshSecret:  process.env.JWT_REFRESH_SECRET || 'refreshSecretKey',
+    refreshExpiresIn: 86400
   }
 };
 

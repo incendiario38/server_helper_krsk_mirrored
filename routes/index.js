@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models').user;
-const {login, register, validateToken} = require('../controllers/auth');
+const {validate, validateRefresh} = require('../middlewares/auth');
+const {login, register, refresh} = require('../controllers/auth');
 const v1 = require('./v1');
 
 router.get('/', function (req, res) {
@@ -10,7 +10,8 @@ router.get('/', function (req, res) {
 
 router.post('/login', login);
 router.post('/register', register);
+router.post('/refresh', validateRefresh, refresh);
 
-router.use('/v1', validateToken, v1);
+router.use('/v1', validate, v1);
 
 module.exports = router;
