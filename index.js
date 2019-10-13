@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const config = require('./config/config');
 
 const app = express();
 
@@ -10,6 +11,6 @@ app.get('/', function(req, res) {
   res.json({ message: 'Express is up!' });
 });
 
-app.listen(3000, function() {
-  console.log('Express is running on port 3000');
+app.listen(config.port, function() {
+  console.log(`Express is running on port ${config.port}`);
 });
