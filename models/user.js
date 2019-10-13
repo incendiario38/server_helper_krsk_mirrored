@@ -1,14 +1,21 @@
-module.exports = function(sequelize, Sequelize) {
+module.exports = function(sequelize, DataTypes) {
   const User = sequelize.define('user', {
     name: {
-      type: Sequelize.STRING,
-      unique: true,
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     password: {
-      type: Sequelize.STRING,
+      type: DataTypes.STRING,
+      allowNull: false,
     },
   }, {
-    timestamps: true
+    timestamps: true,
+    indexes: [
+      {
+        unique: true,
+        fields: ['name']
+      }
+    ]
   });
 
   User.sync()

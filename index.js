@@ -11,7 +11,7 @@ models.sequelize.authenticate()
   .catch(err => console.error('Unable to connect to the database:', err));
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ 
+app.use(bodyParser.urlencoded({
   extended: true
 }));
 
@@ -21,11 +21,11 @@ app.use('/', routes);
 app.use(function (req, res, next) {
   res.status(404).json({
     success: false,
-	message: `Sorry, page "${req.originalUrl}" not found`
+    message: `Sorry, page "${req.originalUrl}" not found`
   });
 });
 
-app.listen(config.port, function() {
+app.listen(config.port, function () {
   console.log(`Express is running on port ${config.port}`);
 });
 
