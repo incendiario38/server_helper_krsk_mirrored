@@ -9,6 +9,9 @@ const app = express();
 models.sequelize.authenticate()
   .then(() => console.log('Connection has been established successfully.'))
   .catch(err => console.error('Unable to connect to the database:', err));
+models.sequelize.sync()
+  .then(() => console.log('Synchronization was successful.'))
+  .catch(err => console.error('Unable to synchronization the database:', err));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({

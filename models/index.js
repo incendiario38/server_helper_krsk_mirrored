@@ -26,13 +26,4 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-
-db.user.sync({force: true})
-  .then(() => console.log('User table created successfully'))
-  .catch(err => console.log('Error: User\'s model!\n', err.message));
-
-db.token.sync({force: true})
-  .then(() => console.log('Token table created successfully'))
-  .catch(err => console.log('Error: Token\'s model!\n', err.message));
-
 module.exports = db;
