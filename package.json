@@ -1,7 +1,7 @@
 {
   "name": "server_helper_krsk",
   "main": "index.js",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Серверная часть ...",
   "repository": {
     "type": "git",
