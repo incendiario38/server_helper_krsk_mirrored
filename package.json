@@ -1,0 +1,20 @@
+{
+  "name": "server_helper_krsk",
+  "main": "index.js",
+  "version": "1.0.0",
+  "description": "Серверная часть ...",
+  "repository" : {
+    "type" : "git",
+	"url" : "https://github.com/yuriyyurinskiy/server_helper_krsk.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
+  }
+}
