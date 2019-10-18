@@ -8,6 +8,22 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    firstname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    surname: {
+      type: DataTypes.STRING,
+      allowNull:false,
+    },
+    patronymic: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   }, {
     timestamps: true,
     indexes: [
