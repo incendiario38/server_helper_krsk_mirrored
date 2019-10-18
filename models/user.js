@@ -18,7 +18,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     patronymic: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     email: {
       type: DataTypes.STRING,
