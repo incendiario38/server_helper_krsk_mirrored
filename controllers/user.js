@@ -82,5 +82,7 @@ router.delete('/:id/delete', async(req, res) => {
         });
     return res.send(true)
         .then (() => res.status(204). send())
-        .catch(((error) => res.status(400).send(error)));
+        .catch((error) => res.status(400).send(error));
 });
+
+module.exports = router;
