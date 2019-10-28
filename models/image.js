@@ -16,6 +16,12 @@ module.exports = function (sequelize, DataTypes) {
       },
   },{
       timestamps: true,
+      indexes: [
+          {
+              unique: true,
+              fields:['path']
+          }
+      ],
       underscored: true,
       sequelize
   });

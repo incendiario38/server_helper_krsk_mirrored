@@ -11,10 +11,24 @@ module.exports = function(sequelize, DataTypes) {
     firstname: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notEmpty: true,
+        len: {
+          args: 3,
+          msg: 'First name must be at least 3 character in length'
+        }
+      }
     },
     surname: {
       type: DataTypes.STRING,
       allowNull:false,
+      validate: {
+        notEmpty: true,
+        len: {
+          args: 3,
+          msg: "First name must be at least 3 character in length"
+        }
+      }
     },
     patronymic: {
       type: DataTypes.STRING,
@@ -23,13 +37,19 @@ module.exports = function(sequelize, DataTypes) {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        isEmail: {
+          msg: "Email address must be valid"
+        },
+        notEmpty: true,
+      },
     },
   }, {
     timestamps: true,
     indexes: [
       {
         unique: true,
-        fields: ['name']
+        fields: ['name, email']
       }
     ],
     underscored: true,

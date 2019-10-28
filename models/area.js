@@ -3,9 +3,21 @@ module.exports = function (sequelize, DataTypes) {
      email: {
        type: DataTypes.STRING,
          allowNull: false,
+         validate: {
+           isEmail: {
+               msg: "Email address must be valid"
+           },
+             notEmpty: true,
+         },
      },
   }, {
       timestamps: true,
+      indexes: [
+          {
+              unique: true,
+              fields:['email']
+          }
+      ],
       underscored: true,
       sequelize
     });
