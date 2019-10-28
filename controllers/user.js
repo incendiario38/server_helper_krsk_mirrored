@@ -1,88 +1,91 @@
-import {Router} from 'express';
+const express = require('express');
+const router = express.Router();
 
-const router = Router();
 const models = require('../models');
-const User = require('../models').user;
 
 router.get('/', async (req, res) => {
-    const users = await req.context.models.user.findAll();
-    return res.send(users)
-        .then ((users) => res,status(200).send(users))
-        .catch((error) => {
-            res.status(400).send(error);
-        });
+    try {
+        const result = await models.user.findAll();
+        return res.status(200).send(result)
+    } catch (e) {
+        return res.status(400).send(e)
+    }
 });
 
 router.get('/:id', async (req, res) => {
-   const user = await req.context.models.user.findByPk(
-       req.params.id,
-   );
-
-   return res.send(user)
-       .then((user) => {
-           if (!user) {
-               return res.status(404).send({
-                   message: 'User Not Found',
-               });
-           }
-           return res.status(200).send(user);
-       })
-       .catch((error) => res.status(400).send(error));
+    try {
+        const result = await models.user.findByPk(req.params.id);
+        if (!result) {
+            return res.status(400).send({
+                message: 'User Not Found',
+            });
+        }
+        return res.status(200).send(result);
+    } catch (e) {
+        return res.status(400).send(e)
+    }
 });
 
 router.post('/create', async (req, res) => {
-    const user = await req.context.models.user.create({
-        firstname: req.body.firstname,
-        surname: req.body.surname,
-        patronymic: req.body.patronymic,
-        email: req.body.email,
-        name: req.body.name,
-        password: req.body.password,
-    });
-
-    return req.send(user)
-        .then ((user) => {
-            res.status(201).send(user)
-        })
-        .catch((error) => res.status(400).send(error));
+    try {
+        const result = await models.user.create({
+            firstname: req.body.firstname,
+            surname: req.body.surname,
+            patronymic: req.body.patronymic,
+            email: req.body.email,
+            name: req.body.name,
+            password: req.body.password,
+        });
+        return res.status(201).send(result)
+    } catch (e) {
+        return res.status(400).send(e);
+    }
 });
 
 router.put('/:id/update' , async(req, res) => {
-    const user = await req.context.models.user.findByPk(req.params.id)
-        .then (user => {
-            if (!user) {
-                return res.status(404).send({
-                    message: 'User Not Found',
-                });
-            }
-            return user.update({
-                firstname: req.body.firstname,
-                surname: req.body.surname,
-                patronymic: req.body.patronymic,
-                email: req.body.email,
-                name: req.body.name,
-                password: req.body.password,
-            })
-                .then(() => res.status(200).send(user))
-                .catch((error) => res.status(400).send(error));
-        })
-        .catch((error) => res.status(400).send(error));
+    try {
+        const result = await models.user.findByPk(req.params.id);
+        if (!result) {
+            return res.status(400).send({
+                message: 'User Not Found',
+            });
+        }
+
+        try {
+            await result.update({
+                firstname: req.body.firstname || result.firstname,
+                surname: req.body.surname || result.surname,
+                patronymic: req.body.patronymic || result.patronymic,
+                email: req.body.email || result.email,
+                name: req.body.name || result.name,
+                password: req.body.password || result.password,
+            });
+            return res.status(200).send(result);
+        } catch (e) {
+            return res.status(400).send(e);
+        }
+    } catch (e) {
+        return res.status(400).send(e);
+    }
 });
 
 router.delete('/:id/delete', async(req, res) => {
-    const result = await req.context.models.user.destroy({
-        where: {id: req.params.id},
-    })
-        .then(user => {
-            if (!user) {
-                return res.status(400).send({
-                    message: 'User Not Found',
-                });
-            }
-        });
-    return res.send(true)
-        .then (() => res.status(204). send())
-        .catch((error) => res.status(400).send(error));
+    try {
+        const result = await models.user.findByPk(req.params.id);
+        if (!result) {
+            return res.status(400).send({
+                message: 'User Not Found',
+            });
+        }
+        try {
+            await result.destroy();
+            return res.status(204).send()
+        } catch (e) {
+            return res.status(400).send(e);
+        }
+    } catch (e) {
+        return res.status(400).send(e)
+    }
 });
 
 module.exports = router;
